@@ -1,6 +1,5 @@
 // import './App.css';
 // import Login from './component/login';
-import SignIn from './component/login';
 // function App() {
 //   return (
 //     <div className="App">
@@ -8,11 +7,12 @@ import SignIn from './component/login';
 //     </div>
 //   );
 // }
-
+import ResponsiveAppBar from './Component/TabBar';
 function App() {
   return (
     <div>
-      <SignIn></SignIn>
+      <ResponsiveAppBar></ResponsiveAppBar>
+
     </div>
   );
 }
