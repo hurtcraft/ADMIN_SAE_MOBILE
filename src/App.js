@@ -8,11 +8,13 @@
 //   );
 // }
 import ResponsiveAppBar from './Component/TabBar';
+import MapSignalement from './View/map';
 function App() {
   return (
     <div>
-      <ResponsiveAppBar></ResponsiveAppBar>
-
+      <ResponsiveAppBar/>
+      <MapSignalement/>
+      
     </div>
   );
 }

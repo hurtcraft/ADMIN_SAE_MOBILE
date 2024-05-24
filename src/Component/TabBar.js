@@ -36,7 +36,9 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+  const test=()=>{
+    console.log("hello world");
+  }
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -92,13 +94,16 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                  
+                    <Typography onClick={test} textAlign="center">{"a"}</Typography>
+                  
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
+            onClick={test}
             variant="h5"
             noWrap
             component="a"
