@@ -111,7 +111,8 @@ const FilterBox = () => {
       setdateError(true);
       return;
     }
-    const url=process.env.REACT_APP_IP_SERVER+"admin/getSignalementsFromFilter";
+    const url=process.env.REACT_APP_IP_SERVER+"admin/test";
+    console.log("fetching data");
     fetch(url, {
       method: "POST",
       headers: {
