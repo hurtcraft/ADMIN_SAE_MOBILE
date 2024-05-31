@@ -5,11 +5,11 @@ import { useState,useEffect } from 'react';
 const chartSetting = {
   yAxis: [
     {
-      label: 'rainfall (mm)',
+      label: 'nombre de signalement',
     },
   ],
-  width: 500,
-  height: 300,
+  width: 1000,
+  height: 500,
   sx: {
     [`.${axisClasses.left} .${axisClasses.label}`]: {
       transform: 'translate(-20px, 0)',
@@ -18,7 +18,7 @@ const chartSetting = {
 };
 
 
-const valueFormatter = (value) => `${value}mm`;
+const valueFormatter = (value) => `${value} signalements`;
 
 export  const GrapheData=({dataset,mapCIPtoNom})=> {
     const [seriesLst, setSeriesLst] = useState([])
