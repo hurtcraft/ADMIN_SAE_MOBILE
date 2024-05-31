@@ -30,44 +30,38 @@ const data = [
   "Dublin",
 ];
 
-const FilterBox = () => {
+const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMediaments}) => {
   //PARTIE MEDICAMENTS PHARMACIE
-  const [pharmacies, setPharmacies] = useState([]);
-  const pharmacieRequest =
-    process.env.REACT_APP_IP_SERVER + "pharmacies/allPharmacies";
+  
 
   const [codePostales, setCodePostales] = useState([]);
   const [regions, setRegions] = useState([]);
   const [departements, setDepartements] = useState([]);
-
-  useEffect(() => {
-    getData(pharmacieRequest, setPharmacies);
-  }, []);
-
   useEffect(() => {
     const uniqueCodePostales = new Set();
     const uniqueRegion = new Set();
     const uniqueDepartements = new Set();
-
-    pharmacies.forEach((pharmacy) => {
+    for (let key of Object.keys(pharmacies)) {
+      let pharmacy=pharmacies[key]
       uniqueCodePostales.add(pharmacy.codePostale);
       uniqueRegion.add(pharmacy.region);
       uniqueDepartements.add(pharmacy.departement);
-    });
+    }
+    // pharmacies.forEach((pharmacy) => {
+    //   uniqueCodePostales.add(pharmacy.codePostale);
+    //   uniqueRegion.add(pharmacy.region);
+    //   uniqueDepartements.add(pharmacy.departement);
+    // });
     setCodePostales([...uniqueCodePostales].sort());
     setRegions([...uniqueRegion].sort());
     setDepartements([...uniqueDepartements].sort());
+
+    console.log(pharmacies[1]);
   }, [pharmacies]);
 
   //PARTIE MEDICAMENTS
-  const [medicaments, setMediaments] = useState([]);
-  const medicamentsRequest =
-    process.env.REACT_APP_IP_SERVER + "medicaments/allMedicaments";
 
   const [nomMedicaments, setNomMedicaments] = useState([]);
-  useEffect(() => {
-    getData(medicamentsRequest, setMediaments);
-  }, []);
 
   useEffect(() => {
     const uniqueMedicament = new Set();
@@ -105,12 +99,13 @@ const FilterBox = () => {
   }
   const handleSubmit=()=>{
     checkInput();
-    console.log(dateDebut);
     if(dateDebut>dateFin || dateDebut===null || dateFin===null){
       console.log("iciciicsq");
       setdateError(true);
       return;
     }
+    setdateError(false);
+    setinputError(false);
     const url=process.env.REACT_APP_IP_SERVER+"admin/getSignalementsFromFilter";
     fetch(url, {
       method: "POST",
@@ -128,7 +123,7 @@ const FilterBox = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        setSignalements(data);
       })
       .catch((error) => {
         console.error("Erreur lors de l'envoi des données:", error);

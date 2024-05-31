@@ -6,4 +6,9 @@ export default {
     rouge: '#C55353',
     gris: '#BDBDBD',
     bleu: '#0000ff',
+
+
+
+    signalementRouge:"#FF0000",
+    signalementVert:"#40FF00"
 };
