@@ -1,10 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import {  useState, useCallback } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { matchSorter } from 'match-sorter';
 import { Button, Card, Chip } from "@mui/material";
 import Colors from "../Utils.js/Colors";
-import { List } from "@mui/icons-material";
 const filterOptions = (options, { inputValue }) => matchSorter(options, inputValue);
 
 const FilterBoxSearchBar = ({ data, label,selectedItems, setSelectedItems }) => {

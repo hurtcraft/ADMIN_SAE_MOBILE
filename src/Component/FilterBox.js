@@ -1,34 +1,17 @@
 import { useEffect, useState } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { Button, Card, Chip,Box } from "@mui/material";
+
+import { Box } from "@mui/material";
 import FilterBoxSearchBar from "./FilterBoxSearchBar";
-import { getData } from "../Utils.js/FetchData";
-import userEvent from "@testing-library/user-event";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { IconButton, Typography } from '@mui/material';
 import Colors from "../Utils.js/Colors";
 import { DatePicker } from "@mui/x-date-pickers";
 import Alert from '@mui/material/Alert';
 import {Fade} from "@mui/material";
-const data = [
-  "Paris",
-  "London",
-  "New York",
-  "Tokyo",
-  "Berlin",
-  "Buenos Aires",
-  "Cairo",
-  "Canberra",
-  "Rio de Janeiro",
-  "Dublin",
-];
+import { LoadingButton } from "@mui/lab";
+
 
 const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMediaments}) => {
   //PARTIE MEDICAMENTS PHARMACIE
@@ -56,7 +39,6 @@ const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMedi
     setRegions([...uniqueRegion].sort());
     setDepartements([...uniqueDepartements].sort());
 
-    console.log(pharmacies[1]);
   }, [pharmacies]);
 
   //PARTIE MEDICAMENTS
@@ -90,22 +72,22 @@ const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMedi
   const [dateError, setdateError] = useState(false);  
   const [inputError, setinputError] = useState(false)
   const checkInput=()=>{
-    if(selectedCodePostales.length==0 &&
-      selectedRegions.length==0 &&
-      selectedDepartements.length==0 &&
-      selectedMedicaments.length==0){
+    if(selectedCodePostales.length===0 &&
+      selectedRegions.length===0 &&
+      selectedDepartements.length===0 &&
+      selectedMedicaments.length===0){
         setinputError(true)
       }
   }
   const handleSubmit=()=>{
     checkInput();
     if(dateDebut>dateFin || dateDebut===null || dateFin===null){
-      console.log("iciciicsq");
       setdateError(true);
       return;
     }
     setdateError(false);
     setinputError(false);
+    setLoading(true)
     const url=process.env.REACT_APP_IP_SERVER+"admin/getSignalementsFromFilter";
     fetch(url, {
       method: "POST",
@@ -124,16 +106,16 @@ const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMedi
       .then((response) => response.json())
       .then((data) => {
         setSignalements(data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Erreur lors de l'envoi des données:", error);
       });
-
-    
-    console.log();
   }
+  const [loading,setLoading]=useState(false);
   
   return (
+
     <div>
       {pharmacies.length > 0 ? (
         <div>
@@ -168,8 +150,8 @@ const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMedi
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Box style={{ width: '90%', height: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', gap: '16px' }}>
-                <DatePicker defaultValue={new Date()} value={dateDebut} onChange={(newValue) => setdateDebut(newValue)} label="date début" />
-                <DatePicker value={dateFin} onChange={(newValue) => setdateFin(newValue)} label="date fin"/>
+                <DatePicker defaultValue={new Date()} value={dateDebut} onChange={(newValue) => setdateDebut(newValue)} format="DD/MM/YYYY" label="date début" />
+                <DatePicker value={dateFin} onChange={(newValue) => setdateFin(newValue)}  format="DD/MM/YYYY" label="date fin"/>
               </Box>
               {dateError ? (
                         <Fade in={dateError}>
@@ -180,20 +162,22 @@ const FilterBox = ({pharmacies,setPharmacies,setSignalements,medicaments,setMedi
 
             </LocalizationProvider>
             <Box style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Button onClick={handleSubmit} variant="contained" style={{ padding:10,marginBottom:"5px", backgroundColor:Colors.vertFonce }}>
+              <LoadingButton loading={loading} onClick={handleSubmit} variant="contained" style={{ padding:10,marginBottom:"5px", backgroundColor:Colors.vertFonce }}>
                     Rechercher
-              </Button>
+              </LoadingButton>
             </Box>
 
           </div>
 
 
           
-        </div>
+          </div>
       ) : (
-        <p>chargement</p>
+        null
       )}
     </div>
+    
+
   );
 };
 
